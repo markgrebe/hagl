@@ -334,12 +334,12 @@ uint8_t hagl_get_glyph(wchar_t code, color_t color, bitmap_t *bitmap, const uint
     return 0;
 }
 
-uint8_t hagl_put_char(wchar_t code, int16_t x0, int16_t y0, color_t color, const uint8_t *font)
+uint8_t hagl_put_char(wchar_t code, int16_t x0, int16_t y0, color_t color, color_t background, const uint8_t *font)
 {
-    return hagl_put_scaled_char(code, x0, y0, 1, color, font);
+    return hagl_put_scaled_char(code, x0, y0, 1, color, background, font);
 }
 
-uint8_t hagl_put_scaled_char(wchar_t code, int16_t x0, int16_t y0, float scalefactor, color_t color, const uint8_t *font)
+uint8_t hagl_put_scaled_char(wchar_t code, int16_t x0, int16_t y0, float scalefactor, color_t color, color_t background, const uint8_t *font)
 {
     uint8_t set, status;
     color_t buffer[HAGL_CHAR_BUFFER_SIZE];
@@ -366,7 +366,7 @@ uint8_t hagl_put_scaled_char(wchar_t code, int16_t x0, int16_t y0, float scalefa
             if (set) {
                 *(ptr++) = color;
             } else {
-                *(ptr++) = 0x0000;
+                *(ptr++) = background;
             }
         }
         glyph.buffer += glyph.pitch;
@@ -386,12 +386,12 @@ uint8_t hagl_put_scaled_char(wchar_t code, int16_t x0, int16_t y0, float scalefa
  * continue from the next line.
  */
 
-uint16_t hagl_put_text(const wchar_t *str, int16_t x0, int16_t y0, color_t color, const unsigned char *font)
+uint16_t hagl_put_text(const wchar_t *str, int16_t x0, int16_t y0, color_t color, color_t background, const unsigned char *font)
 {
-    return hagl_put_scaled_text(str, x0, y0, 1, color, font);
+    return hagl_put_scaled_text(str, x0, y0, 1, color, background, font);
 }
 
-uint16_t hagl_put_scaled_text(const wchar_t *str, int16_t x0, int16_t y0, float scalefactor, color_t color, const unsigned char *font)
+uint16_t hagl_put_scaled_text(const wchar_t *str, int16_t x0, int16_t y0, float scalefactor, color_t color, color_t background, const unsigned char *font)
 {
     wchar_t temp;
     uint8_t status;
@@ -410,9 +410,9 @@ uint16_t hagl_put_scaled_text(const wchar_t *str, int16_t x0, int16_t y0, float 
             y0 += (int)meta.height*scalefactor;
         } else {
             if (scalefactor == 1.0) {
-                x0 += hagl_put_char(temp, x0, y0, color, font);
+                x0 += hagl_put_char(temp, x0, y0, color, background, font);
             } else {
-                x0 += hagl_put_scaled_char(temp, x0, y0, scalefactor, color, font);
+                x0 += hagl_put_scaled_char(temp, x0, y0, scalefactor, color, background, font);
             }
         }
     } while (*str != 0);

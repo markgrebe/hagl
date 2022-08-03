@@ -87,12 +87,30 @@ color_t hagl_get_pixel(int16_t x0, int16_t y0);
  * @param x0
  * @param y0
  * @param color
+ * @param background
  * @param font  pointer to a FONTX font
  * @return width of the drawn character
  */
-uint8_t hagl_put_char(wchar_t code, int16_t x0, int16_t y0, color_t color, const unsigned char *font);
+uint8_t hagl_put_char(wchar_t code, int16_t x0, int16_t y0, color_t color, color_t background, const unsigned char *font);
 
-uint8_t hagl_put_scaled_char(wchar_t code, int16_t x0, int16_t y0, float scalefactor, color_t color, const uint8_t *font);
+/**
+ * Draw a single character
+ *
+ * Output will be clipped to the current clip window. Library itself
+ * includes only a couple of fonts. You can find more fonts at:
+ *
+ * https://github.com/tuupola/fonts
+ *
+ * @param code  unicode code point
+ * @param x0
+ * @param y0
+ * @param scalefactor
+ * @param color
+ * @param background
+ * @param font  pointer to a FONTX font
+ * @return width of the drawn character
+ */
+uint8_t hagl_put_scaled_char(wchar_t code, int16_t x0, int16_t y0, float scalefactor, color_t color, color_t background, const uint8_t *font);
 
 /**
  * Draw a string
@@ -106,12 +124,30 @@ uint8_t hagl_put_scaled_char(wchar_t code, int16_t x0, int16_t y0, float scalefa
  * @param x0
  * @param y0
  * @param color
+ * @param background
  * @param font pointer to a FONTX font
  * @return width of the drawn string
  */
-uint16_t hagl_put_text(const wchar_t *str, int16_t x0, int16_t y0, color_t color, const unsigned char *font);
+uint16_t hagl_put_text(const wchar_t *str, int16_t x0, int16_t y0, color_t color, color_t background, const unsigned char *font);
 
-uint16_t hagl_put_scaled_text(const wchar_t *str, int16_t x0, int16_t y0, float scalefactor, color_t color, const unsigned char *font);
+/**
+ * Draw a scaled string
+ *
+ * Output will be clipped to the current clip window. Library itself
+ * includes only a couple of fonts. You can find more fonts at:
+ *
+ * https://github.com/tuupola/fonts
+ *
+ * @param str pointer to an wide char string
+ * @param x0
+ * @param y0
+ * @param scalefactor
+ * @param color
+ * @param background
+ * @param font pointer to a FONTX font
+ * @return width of the drawn string
+ */
+uint16_t hagl_put_scaled_text(const wchar_t *str, int16_t x0, int16_t y0, float scalefactor, color_t color, color_t background, const unsigned char *font);
 
 /**
  * Extract a glyph into a bitmap
